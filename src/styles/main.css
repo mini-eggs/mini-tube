@@ -1,0 +1,13 @@
+body {
+  margin: 0;
+  background: black;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  font-family: unset;
+  outline: none !important;
+}
