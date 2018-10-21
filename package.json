@@ -1,27 +1,39 @@
 {
+  "name": "mini-tube",
+  "version": "1.0.1",
+  "bin": {
+    "mini-tube": "bin/main.js"
+  },
   "dependencies": {
-    "animejs": "^2.2.0",
+    "electron": "^3.0.5",
     "keybinds": "^1.1.1",
-    "wigly": "^0.1.18",
+    "mouse-activity": "^1.0.2",
+    "reset-css": "^4.0.1",
+    "wigly": "^0.1.21",
+    "wigly-class": "^0.1.21",
+    "wigly-ctx": "^0.1.21",
+    "wigly-customizer": "^0.1.21",
+    "wigly-jsx": "^0.1.21",
     "yt-player": "^3.1.0"
   },
   "scripts": {
     "watch": "webpack-dev-server --mode development --open --hot --inline --host 0.0.0.0",
-    "build": "webpack --mode production && cp static/* dist/ && gzip dist/* -k -f",
+    "build": "rm -rf dist && webpack --mode production && cp static/* dist/ && gzip dist/* -k -f",
     "start": "node_modules/http-server/bin/http-server --fallback index.html -p ${PORT} --gzip -d false dist"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-transform-react-jsx": "^7.0.0",
     "babel-loader": "^8.0.1",
     "css-loader": "^1.0.0",
+    "http-server": "git://github.com/DKurilo/http-server-spa-e2e.git",
     "mini-css-extract-plugin": "^0.4.4",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "webpack": "^4.20.2",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
-    "http-server": "git://github.com/DKurilo/http-server-spa-e2e.git",
     "webpack-dev-server": "^3.1.9"
   }
 }

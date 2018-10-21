@@ -1,0 +1,4 @@
+.search input {
+  padding: 50px;
+  width: calc(100% - 100px);
+}

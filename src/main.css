@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css?family=Abril+Fatface");
+
+* {
+  all: unset;
+  font-size: 56px;
+  font-family: "Abril Fatface", cursive;
+  display: block;
+  border: none;
+  background: none;
+  outline: none;
+  display: block;
+}
+
+body {
+}
+
+head {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+::placeholder {
+}

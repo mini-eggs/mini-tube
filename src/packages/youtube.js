@@ -1,4 +1,4 @@
-var toQuery = obj => {
+var query = obj => {
   var keys = Object.keys(obj);
   var encode = encodeURIComponent;
   var keyValuePair = key => `${encode(key)}=${encode(obj[key])}`;
@@ -25,8 +25,8 @@ class YouTube {
 
   search({ search, maxResults = 25, part = "snippet", type = "video" }) {
     var { base, key } = this;
-    var opts = { q: search, maxResults, part, type, key, videoSyndicated: true, videoEmbeddable: true };
-    var url = `${base}/search${toQuery(opts)}`;
+    var opts = { q: search, maxResults, part, type, key };
+    var url = `${base}/search${query(opts)}`;
     return this.request(url);
   }
 }

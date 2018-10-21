@@ -1,49 +1,12 @@
-import Search from "./components/search.js";
-import List from "./components/list.js";
-import Video from "./components/video.js";
-import "./styles/main.css";
+import wigly from "wigly";
+import classer from "wigly-class";
+import context from "wigly-ctx";
+import customizer from "wigly-customizer";
+import App from "./app";
+import nextTick from "./packages/nextTick";
+import anim from "./packages/anim";
+import "./main.css";
 
-var App = {
-  data() {
-    return {
-      search: true,
-      items: [],
-      selected: null
-    };
-  },
-
-  onVideoExit() {
-    var targets = document.querySelector("iframe");
-    var { finished } = anime({ targets, opacity: 0, easing: "linear" });
-    finished.then(() => this.setState({ selected: null, search: true }));
-  },
-
-  onSearchComplete({ items }) {
-    this.setState({ items: [], selected: null });
-    this.setState({ items });
-  },
-
-  onSelect(selected) {
-    document.activeElement.blur();
-
-    var targets = [
-      document.querySelector("input"),
-      document.querySelector("ul")
-    ];
-
-    var { finished } = anime({ targets, opacity: 0, easing: "linear" });
-    finished.then(() => this.setState({ search: false, items: [], selected }));
-  },
-
-  render() {
-    return {
-      children: [
-        this.state.search && { tag: Search, ...this },
-        !!this.state.items.length && { tag: List, ...this.state, ...this },
-        this.state.selected && { tag: Video, ...this.state, ...this }
-      ]
-    };
-  }
-};
-
-wigly.render(App, document.body);
+var ctx = context({ nextTick, anim });
+var custom = customizer(sig => ctx(classer(sig)), { applyToChildren: true });
+wigly.render(custom(App), document.body);

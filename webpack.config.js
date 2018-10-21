@@ -1,4 +1,3 @@
-var webpack = require("webpack");
 var path = require("path");
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 var OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
@@ -34,7 +33,11 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            plugins: ["@babel/plugin-syntax-dynamic-import", "@babel/plugin-proposal-object-rest-spread"]
+            plugins: [
+              "@babel/plugin-syntax-dynamic-import",
+              "@babel/plugin-proposal-object-rest-spread",
+              ["@babel/plugin-transform-react-jsx", { pragma: "h" }]
+            ]
           }
         }
       }
@@ -48,8 +51,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    new OptimizeCSSAssetsPlugin(),
-    new webpack.ProvidePlugin({ wigly: "wigly", anime: "animejs" })
+    new OptimizeCSSAssetsPlugin()
     // new BundleAnalyzerPlugin()
   ]
 };

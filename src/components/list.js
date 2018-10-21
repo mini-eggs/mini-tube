@@ -1,42 +1,58 @@
-import "../styles/list.css";
+import { h } from "wigly-jsx";
+import Image from "./image";
+import "./list.css";
 
-export default {
-  render() {
-    return {
-      tag: "ul",
-      children: this.props.items.map((item, index) => ({
-        tag: ListItem,
-        item,
-        index,
-        onSelect: this.props.onSelect
-      }))
-    };
+class ListItem {
+  mounted(el) {
+    this.anim({
+      el,
+      immediate: true,
+      opacity: 0,
+      duration: 0,
+      transform: { translateY: "10px" }
+    });
+
+    this.anim({
+      el,
+      opacity: 1,
+      duration: 250,
+      delay: 100 * (this.props.index + 1),
+      transform: { translateY: "0px" }
+    });
   }
-};
 
-var ListItem = {
-  onload(event) {
-    var targets = event.target.parentElement.parentElement;
-    var easing = "linear";
-    anime({ targets, translateY: 5, duration: 0, easing });
-    anime({ targets, opacity: 1, translateY: 0, duration: 500, easing });
-  },
+  handleMouseEnter() {
+    if ("activeElement" in document) {
+      document.activeElement.blur();
+    }
+  }
 
   render() {
     var { item } = this.props;
     var { url, height, width } = item.snippet.thumbnails.high;
-    return {
-      tag: "li",
-      onclick: () => this.props.onSelect(item),
-      children: [
-        {
-          tag: "button",
-          children: [
-            { children: item.snippet.title },
-            { tag: "img", src: url, style: { height, width }, ...this }
-          ]
-        }
-      ]
-    };
+
+    return (
+      <li
+        onclick={() => this.props.onSelect(item)}
+        onmousemove={this.handleMouseEnter}
+      >
+        <button tabindex>
+          <div>{item.snippet.title}</div>
+          <Image src={url} style={{ height, width }} />
+        </button>
+      </li>
+    );
   }
-};
+}
+
+export default class List {
+  render() {
+    return (
+      <ul class="list">
+        {this.props.items.map((item, index) => (
+          <ListItem index={index} item={item} onSelect={this.props.onSelect} />
+        ))}
+      </ul>
+    );
+  }
+}

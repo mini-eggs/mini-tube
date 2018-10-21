@@ -1,0 +1,6 @@
+state
+src
+.dockerignore
+Dockerfile
+webpack.config.js
+.cache
