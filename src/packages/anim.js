@@ -31,6 +31,6 @@ export default ({
       setTimeout(work, delay);
     }
 
-    setTimeout(resolve, duration);
+    setTimeout(resolve, delay + duration);
   });
 };

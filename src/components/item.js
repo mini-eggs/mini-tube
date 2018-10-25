@@ -1,4 +1,5 @@
 import { h } from "wigly-jsx";
+import keybinds from "keybinds";
 import "./item.css";
 
 export default class Item {
@@ -22,51 +23,50 @@ export default class Item {
   }
 
   keybinds() {
-    import("keybinds").then(file => {
-      var keybinds = file.default;
-
-      keybinds([], 37, () => {
-        var t = this.state.player.getCurrentTime();
-        this.state.player.seekTo(t - 5);
-      });
-
-      keybinds([], 39, () => {
-        var t = this.state.player.getCurrentTime();
-        this.state.player.seekTo(t + 5);
-      });
-
-      keybinds([], 38, () => {
-        var v = this.state.player.getVolume();
-        this.state.player.setVolume(v + 5);
-      });
-
-      keybinds([], 40, () => {
-        var v = this.state.player.getVolume();
-        this.state.player.setVolume(v - 5);
-      });
-
-      keybinds([], 32, () => {
-        var state = this.state.player.getPlayerState();
-        var rules = {
-          1: this.state.player.pauseVideo,
-          2: this.state.player.playVideo
-        };
-        rules[state].call(this.state.player);
-      });
-
-      var destroy = keybinds([], 27, async () => {
-        var el = this.state.player.getIframe();
-        await this.anim({ el, opacity: 0, duration: 250 });
-        this.props.onVideoExit();
-      });
-
-      this.setState({ keybinds: destroy });
+    keybinds([], 37, () => {
+      var t = this.state.player.getCurrentTime();
+      this.state.player.seekTo(t - 5);
     });
+
+    keybinds([], 39, () => {
+      var t = this.state.player.getCurrentTime();
+      this.state.player.seekTo(t + 5);
+    });
+
+    keybinds([], 38, () => {
+      var v = this.state.player.getVolume();
+      this.state.player.setVolume(v + 5);
+    });
+
+    keybinds([], 40, () => {
+      var v = this.state.player.getVolume();
+      this.state.player.setVolume(v - 5);
+    });
+
+    keybinds([], 32, () => {
+      var state = this.state.player.getPlayerState();
+      var rules = {
+        1: this.state.player.pauseVideo,
+        2: this.state.player.playVideo
+      };
+      rules[state].call(this.state.player);
+    });
+
+    var destroy = keybinds([], 27, async () => {
+      var el = this.state.player.getIframe();
+      await this.anim({ el, opacity: 0, duration: 250 });
+      this.props.onVideoExit();
+    });
+
+    this.setState({ keybinds: destroy });
   }
 
   handeLoad(event) {
     var player = new YT.Player(event.target, {
-      events: { onReady: e => this.handleVideoReady(e) }
+      events: {
+        onReady: e => this.handleVideoReady(e),
+        onStateChange: e => this.handleVideoStateChange(e)
+      }
     });
 
     this.setState({ player }, () => this.keybinds());
@@ -75,6 +75,12 @@ export default class Item {
   handleVideoReady(event) {
     var el = event.target.getIframe();
     this.anim({ el, opacity: 1, duration: 250 });
+  }
+
+  handleVideoStateChange(event) {
+    if (event.data === 0) {
+      this.props.onVideoExit();
+    }
   }
 
   render() {

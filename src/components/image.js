@@ -1,8 +1,9 @@
 import { h } from "wigly-jsx";
+import "./image.css";
 
 export default class Image {
   mounted(el) {
-    this.anim({ el, immediate: true, opacity: 0 });
+    this.anim({ el: el.firstChild, immediate: true, opacity: 0 });
   }
 
   onLoad(event) {
@@ -12,11 +13,13 @@ export default class Image {
 
   render() {
     return (
-      <img
-        style={this.props.style || {}}
-        src={this.props.src}
-        onload={this.onLoad}
-      />
+      <div class="image-container">
+        <img
+          style={this.props.style || {}}
+          src={this.props.src}
+          onload={this.onLoad}
+        />
+      </div>
     );
   }
 }
